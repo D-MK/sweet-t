@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useFoodStore } from '@/stores/foodStore'
 import { addFoodEntry } from '@/services/foodService'
+import { useToastStore } from '@/stores/toastStore'
 
 interface FoodPreset {
   name: string
@@ -26,6 +27,7 @@ const PRESETS: FoodPreset[] = [
 
 export default function FoodPresets() {
   const { addEntry } = useFoodStore()
+  const { addToast } = useToastStore()
   const [savingPreset, setSavingPreset] = useState<string | null>(null)
 
   const handleQuickAdd = async (preset: FoodPreset) => {
@@ -39,8 +41,10 @@ export default function FoodPresets() {
         timestamp: Date.now(),
       })
       addEntry(entry)
+      addToast(`Added ${preset.name}`)
     } catch (err) {
       console.error('Failed to quick-add food:', err)
+      addToast('Failed to add food', 'error')
     } finally {
       setSavingPreset(null)
     }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useGlucoseStore } from '@/stores/glucoseStore'
 import { addGlucoseReading } from '@/services/glucoseService'
 import { calculateInsulin } from '@/lib/utils'
+import { useToastStore } from '@/stores/toastStore'
 
 interface AddReadingFormProps {
   onClose?: () => void
@@ -9,6 +10,7 @@ interface AddReadingFormProps {
 
 export default function AddReadingForm({ onClose }: AddReadingFormProps) {
   const { addReading } = useGlucoseStore()
+  const { addToast } = useToastStore()
   const [value, setValue] = useState('')
   const [unit, setUnit] = useState<'mg/dL' | 'mmol/L'>('mg/dL')
   const [notes, setNotes] = useState('')
@@ -47,6 +49,7 @@ export default function AddReadingForm({ onClose }: AddReadingFormProps) {
       })
 
       addReading(reading)
+      addToast('Glucose reading saved')
       setValue('')
       setNotes('')
       onClose?.()

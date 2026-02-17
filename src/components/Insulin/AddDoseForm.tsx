@@ -3,6 +3,7 @@ import { useInsulinStore } from '@/stores/insulinStore'
 import { useGlucoseStore } from '@/stores/glucoseStore'
 import { addInsulinDose } from '@/services/insulinService'
 import { formatDateTime } from '@/lib/utils'
+import { useToastStore } from '@/stores/toastStore'
 
 interface AddDoseFormProps {
   onClose?: () => void
@@ -11,6 +12,7 @@ interface AddDoseFormProps {
 export default function AddDoseForm({ onClose }: AddDoseFormProps) {
   const { addDose } = useInsulinStore()
   const { readings } = useGlucoseStore()
+  const { addToast } = useToastStore()
   const [units, setUnits] = useState('')
   const [insulinType, setInsulinType] = useState<'rapid' | 'long' | 'mixed'>('rapid')
   const [linkedReadingId, setLinkedReadingId] = useState('')
@@ -52,6 +54,7 @@ export default function AddDoseForm({ onClose }: AddDoseFormProps) {
       })
 
       addDose(dose)
+      addToast('Insulin dose logged')
       setUnits('')
       setNotes('')
       setLinkedReadingId('')

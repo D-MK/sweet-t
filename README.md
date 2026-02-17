@@ -42,7 +42,7 @@ A lightweight glucose tracking SPA (Single Page Application) for diabetes manage
    ```bash
    cp .env.example .env
    ```
-   Fill in Firebase and Turso credentials in `.env`
+   Fill in Firebase and Turso credentials in `.env`. Use `KEY=value` per line with no trailing commas or quotes (unless the value contains spaces).
 
 3. **Run development server**
    ```bash

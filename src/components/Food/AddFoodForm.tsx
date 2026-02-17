@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useFoodStore } from '@/stores/foodStore'
 import { addFoodEntry } from '@/services/foodService'
+import { useToastStore } from '@/stores/toastStore'
 
 interface AddFoodFormProps {
   onClose?: () => void
@@ -8,6 +9,7 @@ interface AddFoodFormProps {
 
 export default function AddFoodForm({ onClose }: AddFoodFormProps) {
   const { addEntry } = useFoodStore()
+  const { addToast } = useToastStore()
   const [breadUnits, setBreadUnits] = useState('')
   const [carbsGrams, setCarbsGrams] = useState('')
   const [description, setDescription] = useState('')
@@ -43,6 +45,7 @@ export default function AddFoodForm({ onClose }: AddFoodFormProps) {
       })
 
       addEntry(entry)
+      addToast('Food entry saved')
       setBreadUnits('')
       setCarbsGrams('')
       setDescription('')

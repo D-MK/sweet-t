@@ -52,7 +52,7 @@
         { "task": "Unit toggle (mg/dL vs mmol/L)", "status": "done" },
         { "task": "Display today's summary (TodaySummary component)", "status": "done" },
         { "task": "Auto-save calculation to glucose_readings", "status": "done" },
-        { "task": "Quick action buttons for logging food/insulin from home", "status": "todo" }
+        { "task": "Quick action buttons for logging food/insulin from home", "status": "done" }
       ]
     },
     {
@@ -67,7 +67,7 @@
         { "task": "Wire up glucoseStore to components", "status": "done" },
         { "task": "Date range filtering", "status": "done" },
         { "task": "Edit and delete readings", "status": "done" },
-        { "task": "Connect glucoseService to Turso (when DB ready)", "status": "done" }
+        { "task": "Connect glucoseService to Turso", "status": "done" }
       ]
     },
     {
@@ -81,7 +81,7 @@
         { "task": "Wire up foodStore to components", "status": "done" },
         { "task": "Edit and delete food entries", "status": "done" },
         { "task": "Daily/weekly summaries", "status": "done" },
-        { "task": "Connect foodService to Turso (when DB ready)", "status": "done" }
+        { "task": "Connect foodService to Turso", "status": "done" }
       ]
     },
     {
@@ -96,34 +96,34 @@
         { "task": "Daily totals by type", "status": "done" },
         { "task": "Wire up insulinStore to components", "status": "done" },
         { "task": "Edit and delete doses", "status": "done" },
-        { "task": "Connect insulinService to Turso (when DB ready)", "status": "done" }
+        { "task": "Connect insulinService to Turso", "status": "done" }
       ]
     },
     {
       "id": 8,
       "name": "Profile & Settings",
-      "status": "todo",
+      "status": "done",
       "tasks": [
-        { "task": "User profile display (name, email, avatar)", "status": "todo" },
-        { "task": "Unit preference (mg/dL vs mmol/L)", "status": "todo" },
-        { "task": "Target glucose range settings (min/max sliders)", "status": "todo" },
-        { "task": "Theme selector (light/dark/system)", "status": "todo" },
-        { "task": "Export data to CSV", "status": "todo" },
-        { "task": "Logout from profile page", "status": "todo" }
+        { "task": "User profile display (name, email, avatar)", "status": "done" },
+        { "task": "Unit preference (mg/dL vs mmol/L)", "status": "done" },
+        { "task": "Target glucose range settings (min/max sliders)", "status": "done" },
+        { "task": "Theme selector (light/dark/system)", "status": "done" },
+        { "task": "Export data to CSV", "status": "done" },
+        { "task": "Logout from profile page", "status": "done" }
       ]
     },
     {
       "id": 9,
       "name": "Mobile Optimization & Polish",
-      "status": "todo",
+      "status": "done",
       "tasks": [
-        { "task": "Mobile-first responsive audit", "status": "todo" },
-        { "task": "Touch-optimized inputs (larger tap targets)", "status": "todo" },
-        { "task": "Loading spinner component", "status": "todo" },
-        { "task": "Error boundary component", "status": "todo" },
-        { "task": "Empty state components (no data yet)", "status": "todo" },
-        { "task": "Toast notifications for actions", "status": "todo" },
-        { "task": "PWA manifest (future)", "status": "todo" }
+        { "task": "Mobile-first responsive audit", "status": "done" },
+        { "task": "Touch-optimized inputs (larger tap targets)", "status": "done" },
+        { "task": "Loading spinner component", "status": "done" },
+        { "task": "Error boundary component", "status": "done" },
+        { "task": "Empty state components (no data yet)", "status": "done" },
+        { "task": "Toast notifications for actions", "status": "done" },
+        { "task": "PWA manifest (future)", "status": "done", "note": "Added mobile web app meta tags" }
       ]
     }
   ]

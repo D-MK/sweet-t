@@ -1,1 +1,67 @@
 @import "tailwindcss";
+
+/* Toast slide-up animation */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.25s ease-out;
+}
+
+/* Safe area for iOS notch / home indicator */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Make range inputs larger on mobile for touch */
+@media (max-width: 640px) {
+  input[type="range"] {
+    height: 12px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Larger touch targets on mobile */
+@media (max-width: 640px) {
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="datetime-local"],
+  select,
+  textarea {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+    min-height: 44px;
+  }
+
+  button {
+    min-height: 44px;
+  }
+}
+
+/* Dark mode base styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #111827;
+  color: #f3f4f6;
+}
