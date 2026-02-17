@@ -1,25 +1,56 @@
 import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/stores/authStore'
+import { useGlucoseStore } from '@/stores/glucoseStore'
+import { useFoodStore } from '@/stores/foodStore'
+import { useInsulinStore } from '@/stores/insulinStore'
 import { testConnection } from '@/services/turso'
+import { getGlucoseReadings } from '@/services/glucoseService'
+import { getFoodEntries } from '@/services/foodService'
+import { getInsulinDoses } from '@/services/insulinService'
 import AuthProvider from '@/components/Auth/AuthProvider'
 import Calculator from '@/components/Calculator/Calculator'
 import TodaySummary from '@/components/Calculator/TodaySummary'
 import LogoutButton from '@/components/common/LogoutButton'
 import GlucoseTimeline from '@/components/Glucose/GlucoseTimeline'
+import FoodLog from '@/components/Food/FoodLog'
+import DoseLog from '@/components/Insulin/DoseLog'
 
 function DashboardContent() {
   const { user } = useAuthStore()
+  const { setReadings } = useGlucoseStore()
+  const { setEntries } = useFoodStore()
+  const { setDoses } = useInsulinStore()
   const [dbConnected, setDbConnected] = useState<boolean | null>(null)
   const [currentTab, setCurrentTab] = useState<'home' | 'glucose' | 'food' | 'insulin' | 'profile'>('home')
 
   useEffect(() => {
-    // Test database connection on mount
     const checkDb = async () => {
       const connected = await testConnection()
       setDbConnected(connected)
     }
     checkDb()
   }, [])
+
+  // Load all user data once DB is connected and user is authenticated
+  useEffect(() => {
+    if (!dbConnected || !user?.uid) return
+
+    const loadData = async () => {
+      try {
+        const [readings, entries, doses] = await Promise.all([
+          getGlucoseReadings(user.uid),
+          getFoodEntries(user.uid),
+          getInsulinDoses(user.uid),
+        ])
+        setReadings(readings)
+        setEntries(entries)
+        setDoses(doses)
+      } catch (err) {
+        console.error('Failed to load user data:', err)
+      }
+    }
+    loadData()
+  }, [dbConnected, user?.uid, setReadings, setEntries, setDoses])
 
   if (dbConnected === null) {
     return (
@@ -65,12 +96,12 @@ function DashboardContent() {
 
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8" aria-label="Tabs">
+          <nav className="flex space-x-8 overflow-x-auto" aria-label="Tabs">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setCurrentTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
                   currentTab === tab.id
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -92,23 +123,11 @@ function DashboardContent() {
           </div>
         )}
 
-        {currentTab === 'glucose' && (
-          <GlucoseTimeline />
-        )}
+        {currentTab === 'glucose' && <GlucoseTimeline />}
 
-        {currentTab === 'food' && (
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Food Tracker</h2>
-            <p className="text-gray-500">Coming soon...</p>
-          </div>
-        )}
+        {currentTab === 'food' && <FoodLog />}
 
-        {currentTab === 'insulin' && (
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Insulin Tracker</h2>
-            <p className="text-gray-500">Coming soon...</p>
-          </div>
-        )}
+        {currentTab === 'insulin' && <DoseLog />}
 
         {currentTab === 'profile' && (
           <div className="bg-white rounded-lg shadow p-6">

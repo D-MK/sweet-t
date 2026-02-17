@@ -1,6 +1,7 @@
 import type { GlucoseReading } from '@/types'
 import { formatDateTime } from '@/lib/utils'
 import { useGlucoseStore } from '@/stores/glucoseStore'
+import { deleteGlucoseReading } from '@/services/glucoseService'
 import { useState } from 'react'
 
 interface ReadingCardProps {
@@ -11,9 +12,14 @@ export default function ReadingCard({ reading }: ReadingCardProps) {
   const { deleteReading } = useGlucoseStore()
   const [confirmDelete, setConfirmDelete] = useState(false)
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (confirmDelete) {
-      deleteReading(reading.id)
+      try {
+        await deleteGlucoseReading(reading.id)
+        deleteReading(reading.id)
+      } catch (err) {
+        console.error('Failed to delete reading:', err)
+      }
       setConfirmDelete(false)
     } else {
       setConfirmDelete(true)

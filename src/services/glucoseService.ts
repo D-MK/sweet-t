@@ -1,15 +1,23 @@
+import { db } from '@/services/turso'
 import { auth } from '@/lib/firebase'
 import type { GlucoseReading } from '@/types'
 
-export async function getGlucoseReadings(_userId: string): Promise<GlucoseReading[]> {
+export async function getGlucoseReadings(userId: string): Promise<GlucoseReading[]> {
   try {
-    // Placeholder for Turso query when database is set up
-    // const result = await tursoDb.execute(
-    //   'SELECT * FROM glucose_readings WHERE user_id = ? ORDER BY timestamp DESC',
-    //   [userId]
-    // )
-    // return result.rows as GlucoseReading[]
-    return []
+    const result = await db.execute({
+      sql: 'SELECT * FROM glucose_readings WHERE user_id = ? ORDER BY timestamp DESC',
+      args: [userId],
+    })
+    return result.rows.map((row) => ({
+      id: row.id as string,
+      user_id: row.user_id as string,
+      value: row.value as number,
+      unit: row.unit as 'mg/dL' | 'mmol/L',
+      calculated_insulin: row.calculated_insulin as number | undefined,
+      timestamp: row.timestamp as number,
+      notes: row.notes as string | undefined,
+      created_at: row.created_at as number,
+    }))
   } catch (error) {
     console.error('Failed to fetch glucose readings:', error)
     throw error
@@ -21,44 +29,83 @@ export async function addGlucoseReading(reading: Omit<GlucoseReading, 'id' | 'cr
     const userId = auth.currentUser?.uid
     if (!userId) throw new Error('User not authenticated')
 
-    const id = `glucose_${Date.now()}`
-    const newReading: GlucoseReading = {
+    const id = `glucose_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+    const createdAt = Date.now()
+
+    await db.execute({
+      sql: `INSERT INTO glucose_readings (id, user_id, value, unit, calculated_insulin, timestamp, notes, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [id, userId, reading.value, reading.unit, reading.calculated_insulin ?? null, reading.timestamp, reading.notes ?? null, createdAt],
+    })
+
+    return {
       ...reading,
       id,
       user_id: userId,
-      created_at: Date.now(),
+      created_at: createdAt,
     }
-
-    // Placeholder for Turso insert when database is set up
-    // await tursoDb.execute(
-    //   `INSERT INTO glucose_readings
-    //    (id, user_id, value, unit, calculated_insulin, timestamp, notes, created_at)
-    //    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    //   [newReading.id, newReading.user_id, newReading.value, newReading.unit,
-    //    newReading.calculated_insulin, newReading.timestamp, newReading.notes, newReading.created_at]
-    // )
-
-    return newReading
   } catch (error) {
     console.error('Failed to add glucose reading:', error)
     throw error
   }
 }
 
-export async function updateGlucoseReading(_id: string, _reading: Partial<GlucoseReading>): Promise<GlucoseReading | null> {
+export async function updateGlucoseReading(id: string, updates: Partial<GlucoseReading>): Promise<GlucoseReading | null> {
   try {
-    // Placeholder for Turso update when database is set up
-    return null
+    const userId = auth.currentUser?.uid
+    if (!userId) throw new Error('User not authenticated')
+
+    const fields: string[] = []
+    const args: (string | number | null)[] = []
+
+    if (updates.value !== undefined) { fields.push('value = ?'); args.push(updates.value) }
+    if (updates.unit !== undefined) { fields.push('unit = ?'); args.push(updates.unit) }
+    if (updates.calculated_insulin !== undefined) { fields.push('calculated_insulin = ?'); args.push(updates.calculated_insulin) }
+    if (updates.timestamp !== undefined) { fields.push('timestamp = ?'); args.push(updates.timestamp) }
+    if (updates.notes !== undefined) { fields.push('notes = ?'); args.push(updates.notes ?? null) }
+
+    if (fields.length === 0) return null
+
+    args.push(id, userId)
+    await db.execute({
+      sql: `UPDATE glucose_readings SET ${fields.join(', ')} WHERE id = ? AND user_id = ?`,
+      args,
+    })
+
+    const result = await db.execute({
+      sql: 'SELECT * FROM glucose_readings WHERE id = ? AND user_id = ?',
+      args: [id, userId],
+    })
+
+    if (result.rows.length === 0) return null
+
+    const row = result.rows[0]
+    return {
+      id: row.id as string,
+      user_id: row.user_id as string,
+      value: row.value as number,
+      unit: row.unit as 'mg/dL' | 'mmol/L',
+      calculated_insulin: row.calculated_insulin as number | undefined,
+      timestamp: row.timestamp as number,
+      notes: row.notes as string | undefined,
+      created_at: row.created_at as number,
+    }
   } catch (error) {
     console.error('Failed to update glucose reading:', error)
     throw error
   }
 }
 
-export async function deleteGlucoseReading(_id: string): Promise<boolean> {
+export async function deleteGlucoseReading(id: string): Promise<boolean> {
   try {
-    // Placeholder for Turso delete when database is set up
-    return true
+    const userId = auth.currentUser?.uid
+    if (!userId) throw new Error('User not authenticated')
+
+    const result = await db.execute({
+      sql: 'DELETE FROM glucose_readings WHERE id = ? AND user_id = ?',
+      args: [id, userId],
+    })
+    return result.rowsAffected > 0
   } catch (error) {
     console.error('Failed to delete glucose reading:', error)
     throw error

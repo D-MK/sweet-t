@@ -19,13 +19,13 @@
     {
       "id": 2,
       "name": "Database Schema & Setup",
-      "status": "partial",
+      "status": "done",
       "tasks": [
         { "task": "Create SQL migration file (001_initial_schema.sql)", "status": "done" },
         { "task": "Create TypeScript types matching schema (types/database.ts)", "status": "done" },
         { "task": "Build Turso client wrapper (services/turso.ts)", "status": "done" },
-        { "task": "Set up Turso account and create database", "status": "todo", "note": "User action required" },
-        { "task": "Run schema migrations against Turso", "status": "todo", "note": "User action required" }
+        { "task": "Set up Turso account and create database", "status": "done" },
+        { "task": "Run schema migrations against Turso", "status": "done" }
       ]
     },
     {
@@ -39,7 +39,7 @@
         { "task": "Create AuthProvider wrapper with onAuthStateChanged", "status": "done" },
         { "task": "Session persistence (browserLocalPersistence)", "status": "done" },
         { "task": "Logout functionality", "status": "done" },
-        { "task": "Create Firebase project and enable providers", "status": "todo", "note": "User action required" }
+        { "task": "Create Firebase project and enable providers", "status": "done" }
       ]
     },
     {
@@ -67,36 +67,36 @@
         { "task": "Wire up glucoseStore to components", "status": "done" },
         { "task": "Date range filtering", "status": "done" },
         { "task": "Edit and delete readings", "status": "done" },
-        { "task": "Connect glucoseService to Turso (when DB ready)", "status": "todo" }
+        { "task": "Connect glucoseService to Turso (when DB ready)", "status": "done" }
       ]
     },
     {
       "id": 6,
       "name": "Food Tracker Tab",
-      "status": "todo",
+      "status": "done",
       "tasks": [
-        { "task": "Create AddFoodForm component", "status": "todo" },
-        { "task": "Create FoodPresets with common food items", "status": "todo" },
-        { "task": "Create FoodLog daily view with totals", "status": "todo" },
-        { "task": "Wire up foodStore to components", "status": "todo" },
-        { "task": "Edit and delete food entries", "status": "todo" },
-        { "task": "Daily/weekly summaries", "status": "todo" },
-        { "task": "Connect foodService to Turso (when DB ready)", "status": "todo" }
+        { "task": "Create AddFoodForm component", "status": "done" },
+        { "task": "Create FoodPresets with common food items", "status": "done" },
+        { "task": "Create FoodLog daily view with totals", "status": "done" },
+        { "task": "Wire up foodStore to components", "status": "done" },
+        { "task": "Edit and delete food entries", "status": "done" },
+        { "task": "Daily/weekly summaries", "status": "done" },
+        { "task": "Connect foodService to Turso (when DB ready)", "status": "done" }
       ]
     },
     {
       "id": 7,
       "name": "Insulin Tracker Tab",
-      "status": "todo",
+      "status": "done",
       "tasks": [
-        { "task": "Create AddDoseForm component (units, type, timestamp)", "status": "todo" },
-        { "task": "Create DoseLog history view", "status": "todo" },
-        { "task": "Insulin type selector (rapid/long/mixed)", "status": "todo" },
-        { "task": "Link dose to glucose reading", "status": "todo" },
-        { "task": "Daily totals by type", "status": "todo" },
-        { "task": "Wire up insulinStore to components", "status": "todo" },
-        { "task": "Edit and delete doses", "status": "todo" },
-        { "task": "Connect insulinService to Turso (when DB ready)", "status": "todo" }
+        { "task": "Create AddDoseForm component (units, type, timestamp)", "status": "done" },
+        { "task": "Create DoseLog history view", "status": "done" },
+        { "task": "Insulin type selector (rapid/long/mixed)", "status": "done" },
+        { "task": "Link dose to glucose reading", "status": "done" },
+        { "task": "Daily totals by type", "status": "done" },
+        { "task": "Wire up insulinStore to components", "status": "done" },
+        { "task": "Edit and delete doses", "status": "done" },
+        { "task": "Connect insulinService to Turso (when DB ready)", "status": "done" }
       ]
     },
     {
