@@ -5,8 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function calculateInsulin(glucose: number): number {
-  return ((glucose * 18) - 80) / 40
+export function calculateInsulin(glucoseMgDl: number): number {
+  return glucoseMgDl > 100
+    ? (glucoseMgDl - 80) / 40
+    : glucoseMgDl / 40
 }
 
 export function glucoseToMmol(mgDl: number): number {
