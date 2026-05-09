@@ -98,7 +98,7 @@ export default function Calculator() {
           <p className="text-4xl font-bold text-indigo-600">{result.toFixed(1)}</p>
           <p className="text-sm text-gray-600 mt-2">units</p>
           <p className="text-xs text-gray-500 mt-4">
-            Formula: ((glucose × 18) - 80) ÷ 40
+            Formula: if (mmol/L × 18) &gt; 100 then ((mmol/L × 18) − 80) ÷ 40, else (mmol/L × 18) ÷ 40
           </p>
           {saved && (
             <p className="text-xs text-green-600 mt-2">Saved to glucose readings</p>
