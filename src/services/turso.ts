@@ -1,11 +1,13 @@
-import { createClient } from '@libsql/client'
+import { createClient } from '@libsql/client/web'
 
-const tursoUrl = import.meta.env.VITE_TURSO_URL
-const tursoToken = import.meta.env.VITE_TURSO_AUTH_TOKEN
+const rawUrl = import.meta.env.VITE_TURSO_URL?.trim()
+const tursoToken = import.meta.env.VITE_TURSO_AUTH_TOKEN?.trim()
 
-if (!tursoUrl || !tursoToken) {
+if (!rawUrl || !tursoToken) {
   throw new Error('Turso credentials not configured. Please set VITE_TURSO_URL and VITE_TURSO_AUTH_TOKEN in .env')
 }
+
+const tursoUrl = /^[a-z]+:\/\//i.test(rawUrl) ? rawUrl : `libsql://${rawUrl}`
 
 export const db = createClient({
   url: tursoUrl,
